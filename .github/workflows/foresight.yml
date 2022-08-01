@@ -1,0 +1,60 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Foresight CI Workflow
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+
+permissions:
+  contents: read
+
+
+env:
+  FORESIGHT_UPLOADER_SIGNER_URL: https://upload.thundra.us
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.6", "3.8", "3.9", "3.x"]
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Collect Workflow Telemetry
+      if: always()
+      uses: runforesight/foresight-workflow-kit-action@v1
+      with:
+        api_key: ${{ secrets.FORESIGHT_API_KEY }}
+
+    - name: Set up Python versions
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install wheel
+        if [ -f requirements.dev.txt ]; then pip install -r requirements.dev.txt; fi
+
+    - name: Test with pytest
+      if: always()
+      run: pytest --junitxml=junit-test-result.xml
+
+
+    - name: Analyze Test and/or Coverage Results
+      if: always()
+      uses: thundra-io/foresight-test-kit-action@v1
+      with:
+        api_key: ${{ secrets.FORESIGHT_API_KEY }}
+        test_framework: pytest
+        test_format: junit
+        test_path: "./junit-test-result.xml"
