@@ -1,4 +1,18 @@
 
+<table cellpadding="5">
+<tbody align="center">
+<tr>
+  <b> Foresight: Increase CI/CD Health & Test Performance </b>
+  <a href="https://www.runforesight.com/?utm_source=statsviz&utm_medium=sponsorship">
+<img align="right" width="200" alt="Foresight" src="https://www.thundra.io/hubfs/RunForesight/GitHub%20Sponsorship%20banners/github-actions-observability.png">
+</a>
+<br /> 
+   Foresight provides full visibility and deep insights into the health and performance of your tests and CI pipelines. Assess the risk of code changes, deal with flaky tests, see workflow and test trends over time, and improve the contributing experience with Foresight.
+  
+</tr>
+</tbody>
+</table>
+
 ## Foresight.io Demo Projects - Pudb
 
 ---
